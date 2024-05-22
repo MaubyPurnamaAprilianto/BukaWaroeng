@@ -1,14 +1,16 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 body {
-  font-family: "Roboto", sans-serif;
-  color: #fff;
+  font-family: "Outfit", sans-serif;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
 a {
   text-decoration: none;
 }
@@ -17,4 +19,64 @@ ul {
   list-style: none;
 }
 
+.btn {
+  /* padding: 10px 22px;
+  font-size: 1rem;
+  text-transform: uppercase; */
+  background: rgb(248, 217, 15);
+  color: #222;
+  border: 1px solid #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
 
+.btn-light {
+  background: rgb(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.btn:hover {
+  background: rgb(255, 255, 255, 0.2);
+  color: #fff;
+  transition: 0.3s;
+}
+
+.btn-light:hover {
+  background: rgb(248, 217, 15);
+  color: #000;
+  transition: 0.3s;
+}
+
+/* .nav-link:hover{
+  color: #F8D90F;
+} */
+
+/* navbar
+.navbar {
+  background-color: #000;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+} */
