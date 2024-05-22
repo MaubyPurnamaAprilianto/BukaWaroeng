@@ -44,7 +44,7 @@ $data = mysqli_fetch_array($query);
           <a class="hover:text-gray-500" href="profil.php">Profil</a>
         </li>
         <li>
-          <!-- <a href="register.php" class="btn px-4 py-2 hover:text-white rounded-lg">Register</a> -->
+          <a href="logikalogout.php" class="btn px-4 py-2 hover:text-white rounded-lg">Logout</a>
         </li>
       </ul>
     </div>
