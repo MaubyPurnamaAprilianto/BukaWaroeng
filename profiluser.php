@@ -73,7 +73,7 @@ $data = mysqli_fetch_array($query);
           $alamat = ucwords($_POST['alamat']);
           $update = mysqli_query($conn, "UPDATE user SET name = '$name', username = '$username', nomer_hp = '$hp', email = '$email', alamat = '$alamat' WHERE id = '$_SESSION[id]'");
           if ($update) {
-            echo "<script>alert('Ubah Profil Berhasil');window.location='profil.php'</script>";
+            echo "<script>alert('Ubah Profil Berhasil');window.location='profiluser.php'</script>";
           } else {
             echo 'gagal'.mysqli_error($conn);
           }

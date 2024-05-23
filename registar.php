@@ -10,7 +10,7 @@
 </head>
 <body class="p-5 bg-black">
   <div class="container d-flex justify-content-center flex-column w-50 border border-white text-light p-5  shadow rounded" style="height: 500px;">
-    <h1 class="text-center text-light mb-5">Login</h1>
+    <h1 class="text-center text-light mb-5">Registar</h1>
     <form action="logikaregistar.php" method="post">
       <div class="d-flex gap-3">
         <div class="mb-3">
@@ -32,6 +32,7 @@
           <input type="password" class="form-control" id="password" name="password" placeholder="Masukan Password" required>
         </div>
       </div>
+      <p>Sudah punya akun? <a href="login.php">Daftar</a></p>
       <button type="submit" class="btn btn-outline-primary">Login</button>
     </form>
   </div>

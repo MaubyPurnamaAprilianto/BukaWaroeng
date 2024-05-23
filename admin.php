@@ -6,6 +6,9 @@ if ($_SESSION["login"] !== true) {
   echo "<script>window.location='login.php'</script>";
   exit;
 }
+
+$query = mysqli_query($conn, "SELECT * FROM user WHERE id = '$_SESSION[id]'");
+$row = mysqli_fetch_array($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +21,7 @@ if ($_SESSION["login"] !== true) {
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-<nav class="w-full h-16 bg-gray-800 px-6 flex justify-between items-center text-white">
+<nav class="w-full h-16 bg-gray-800 px-6 flex justify-between items-center text-white fixed z-10">
     <div>
       <a class="text-3xl font-bold" href="index.php">Toko BukaWaroeng</a>
     </div>
@@ -47,6 +50,13 @@ if ($_SESSION["login"] !== true) {
     </div>
 </nav>
 
+<div class="w-full h-screen flex justify-center items-center px-[10%]">
+    <div class="w-full h-[55%] flex justify-center items-center flex-col bg-[#f2f2f2] rounded-lg p-[10%] text-center">
+      <h3 class="text-2xl font-bold mb-4">Selamat Datang <?= $row['name']; ?> Di Toko BukaWaroeng</h3>
+      <p>Aplikasi Katalog Produk – Jadikan tokomu selalu update dalam mengelola pesanan dan persedian produk dengan menggunakan BukaWaroeng. </p>
+    </div>
+  </div>
+
 <!-- buat kan saya seacrh -->
 <div class="w-full h-[13vh] flex justify-center border-b border-gray-300 py-4 gap-2">
   <input type="text" placeholder="Cari Produk" class="w-[50%] border border-gray-500 p-2 rounded-lg">
@@ -73,7 +83,7 @@ if ($_SESSION["login"] !== true) {
 
 <!-- buat kan card produk -->
 <div>
-  <div class="w-full h-[90vh] flex justify-center items-center gap-4">
+  <div class="w-full flex flex-wrap justify-center items-center gap-4 ">
     <div class="bg-white rounded-lg shadow-lg w-[30%] h-[70vh] p-4 flex justify-center items-center flex-col">
       <div>
         <img src="asset/img/produk1.png" alt="" width="250px">
@@ -81,12 +91,12 @@ if ($_SESSION["login"] !== true) {
       <div class="w-full">
         <p class="text-2xl font-bold tracking-[0.1em] uppercase ">Kol </p>
         <p class="text-xl text-right text-red-500 mb-3">Rp. 100.000</p>
-        <div class="flex justify-between">
-          <a href="edit.php" class="btn px-4 py-2 hover:bg-gray-500 hover:text-white rounded-lg">Edit</a>
-          <a href="delete.php" class="btn px-4 py-2 hover:bg-gray-500 hover:text-white rounded-lg">Delete</a>
-        </div>
+
       </div>
     </div>
+    <div class="bg-white rounded-lg shadow-lg w-[30%] h-[70vh] p-4 flex justify-center items-center flex-col"></div>
+    <div class="bg-white rounded-lg shadow-lg w-[30%] h-[70vh] p-4 flex justify-center items-center flex-col"></div>
+    <div class="bg-white rounded-lg shadow-lg w-[30%] h-[70vh] p-4 flex justify-center items-center flex-col"></div>
     <div class="bg-white rounded-lg shadow-lg w-[30%] h-[70vh] p-4 flex justify-center items-center flex-col"></div>
     <div class="bg-white rounded-lg shadow-lg w-[30%] h-[70vh] p-4 flex justify-center items-center flex-col"></div>
   </div>

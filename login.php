@@ -20,6 +20,7 @@
         <label for="password" class="form-label">Password</label>
         <input type="password" class="form-control" id="password" name="password" placeholder="Masukan Password" required>
       </div>
+      <p>Belum punya akun? <a href="registar.php">Register</a></p>
       <button type="submit" class="btn btn-outline-primary">Login</button>
     </form>
   </div>

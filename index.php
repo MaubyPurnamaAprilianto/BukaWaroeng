@@ -34,7 +34,7 @@
           <a href="login.php" class="btn-light px-4 py-2 font-bold  rounded-lg">Login</a>
         </li>
         <li>
-          <a href="register.php" class="btn px-4 py-2 hover:text-white rounded-lg">Register</a>
+          <a href="registar.php" class="btn px-4 py-2 hover:text-white rounded-lg">Register</a>
         </li>
       </ul>
     </div>
