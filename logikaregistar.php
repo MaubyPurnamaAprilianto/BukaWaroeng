@@ -5,7 +5,7 @@ $conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
 $name = $_POST['name'];
 $username = $_POST['username'];
 $email = $_POST['email'];
-$password = $_POST['password'];
+$password = md5($_POST['password']); // Diganti ke md5 agar password disimpan dalam bentuk md5
 $no_hp = '';
 $alamat = '';
 $level = 2; // Menentukan level default sebagai 2
@@ -18,3 +18,4 @@ if ($query) {
   echo "Gagal";
 }
 ?>
+

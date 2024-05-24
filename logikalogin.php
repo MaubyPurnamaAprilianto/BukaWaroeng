@@ -5,7 +5,7 @@ session_start();
 $conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
 
 $username = $_POST['username'];
-$password = $_POST['password'];
+$password = md5($_POST['password']);
 
 $query = "SELECT * FROM user WHERE username = '$username' AND password = '$password'";
 $result = mysqli_query($conn, $query);
@@ -30,3 +30,4 @@ if (mysqli_num_rows($result) > 0) {
 }
 
 $conn->close();
+

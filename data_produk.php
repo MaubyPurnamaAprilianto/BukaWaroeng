@@ -53,7 +53,7 @@
         <td class="flex justify-center border border-gray-300"><a href="produk/<?php echo $data['produk_image'] ?>" target="_blank"> <img src="produk/<?php echo $data['produk_image'] ?>" width="50px"> </a></td>
         <td class="border border-gray-300">
           <a href="edit_produk.php?id=<?= $data['id'] ?>" class="bg-green-500 px-4 py-2 text-white hover:bg-green-600 rounded-lg">Edit</a>
-          <a href="delete_produk.php?id=<?= $data['id'] ?>" class="bg-red-500 px-4 py-2 text-white hover:bg-red-700 rounded-lg">Delete</a>
+          <a href="delete_produk.php?id=<?= $data['id'] ?> " onclick="return confirm('Yakin ingin hapus ?')" class="bg-red-500 px-4 py-2 text-white hover:bg-red-700 rounded-lg">Delete</a>
         </td>
       </tr>
 
