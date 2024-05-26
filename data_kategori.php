@@ -112,28 +112,23 @@
   <div class="w-full min-h-screen flex flex-col items-left p-10">
     <h1 class="text-3xl font-bold mb-6 text-center">Data Produk</h1>
     <div class="mb-4">
-      <a href="tambah_produk.php" class="bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 rounded-lg">Tambah</a>
+      <a href="tambah-data-kategori.php" class="bg-blue-500 px-4 py-2 text-white  hover:bg-blue-600 rounded-lg">Tambah</a>
     </div>
     <div class="overflow-x-auto w-full">
       <table class="table-auto w-full mt-6 border border-gray-300" cellspacing="0" cellpadding="10">
         <thead>
           <tr>
-            <th class="border border-gray-300 px-4 py-2">No</th>
-            <th class="border border-gray-300 px-4 py-2">Nama Kategori</th>
-            <th class="border border-gray-300 px-4 py-2">Nama Produk</th>
-            <th class="border border-gray-300 px-4 py-2">Deskripsi</th>
-            <th class="border border-gray-300 px-4 py-2">Harga</th>
-            <th class="border border-gray-300 px-4 py-2">Gambar</th>
-            <th class="border border-gray-300 px-4 py-2">Aksi</th>
+            <th class="border border-gray-300 px-4 py-2 w-[100px]">No</th>
+            <th class="border border-gray-300 px-4 py-2 w-[500px]">Kategori</th>
+            <th class="border border-gray-300 px-4 py-2 w-[100px]">Aksi</th>
           </tr>
         </thead>
         <tbody>
           <?php
         $no = 1;
           $conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
-          $query = mysqli_query($conn, "SELECT produk.*, kategori.kategori_name FROM produk LEFT JOIN kategori ON produk.kategori_id = kategori.id ORDER BY produk.id DESC");
-
-          while($data = mysqli_fetch_array($query)) {
+          $kategori = mysqli_query($conn, "SELECT * FROM kategori ORDER BY id DESC");
+          while ($data = mysqli_fetch_array($kategori)) {
               ?>
           <tr>
             <td class="border border-gray-300 px-4 py-2"><?= $no++ ?>
@@ -141,44 +136,12 @@
             <td class="border border-gray-300 px-4 py-2">
               <?= $data['kategori_name'] ?>
             </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <?= $data['produk_nama'] ?>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <?= $data['produk_deksripsi'] ?>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">Rp.
-              <?= number_format($data['produk_harga']) ?>
-            </td>
             <td class="border border-gray-300 px-4 py-2 flex justify-center">
-              <a href="produk/<?php echo $data['produk_image'] ?>"
-                target="_blank">
-                <img
-                  src="produk/<?php echo $data['produk_image'] ?>"
-                  class="w-12 h-12 object-cover rounded" alt="Gambar Produk">
-              </a>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <div class="flex justify-center">
-                <a href="edit_produk.php?id=<?= $data['id'] ?>"
-                  class="bg-green-500 px-4 py-2 text-white hover:bg-green-600 rounded-lg mr-2">Edit</a>
-                <a href="delete_produk.php?id=<?= $data['id'] ?> "
-                  onclick="return confirm('Yakin ingin hapus ?')"
-                  class="bg-red-500 px-4 py-2 text-white hover:bg-red-700 rounded-lg">Delete</a>
-              </div>
-            </td>
-          </tr>
-          <tr class="hidden">
-            <td colspan="6" class="border border-gray-300 px-4 py-2">
-              <b>Kategori:</b>
-              <?= $data['kategori_name'] ?><br>
-              <b>Deskripsi:</b>
-              <?= $data['produk_deksripsi'] ?><br>
-              <b>Harga:</b> Rp.
-              <?= number_format($data['produk_harga']) ?><br>
-              <b>Gambar:</b> <a
-                href="produk/<?php echo $data['produk_image'] ?>"
-                target="_blank">Link</a>
+              <a href="edit-kategory.php?id=<?= $data['id'] ?>"
+                class="bg-green-500 px-4 py-2 text-white hover:bg-green-600 rounded-lg mr-2">Edit</a>
+              <a href="deletekategori.php?id=<?= $data['id'] ?> "
+                onclick="return confirm('Yakin ingin hapus ?')"
+                class="bg-red-500 px-4 py-2 text-white hover:bg-red-700 rounded-lg">Delete</a>
             </td>
           </tr>
           <?php } ?>
@@ -187,7 +150,7 @@
     </div>
   </div>
 
-
+  <!-- footer -->
   <footer class="w-full bg-gray-800">
     <div class="container mx-auto px-6 py-8">
       <div class="flex flex-col lg:flex-row justify-between items-center text-white">
@@ -216,6 +179,7 @@
       </div>
     </div>
   </footer>
+
 
   <script>
     const menuToggle = document.getElementById('menu-toggle');

@@ -12,3 +12,10 @@ document.addEventListener("click", function (event) {
     document.getElementById("dropdownMenu").classList.add("hidden");
   }
 });
+
+
+const navActive = document.getElementById('active');
+
+navActive.addEventListener('click', () => {
+  navActive.classList.toggle('hidden');
+});

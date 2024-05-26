@@ -15,7 +15,7 @@ if(isset($id)) {
         $data = mysqli_fetch_assoc($query);
 
         // Hapus gambar terkait dengan produk
-        unlink("produk/" . $data['image']);
+        unlink("produk/" . $data['produk_image']);
 
         // Lakukan kueri DELETE untuk menghapus produk dari database
         mysqli_query($conn, "DELETE FROM produk WHERE id = $id");

@@ -12,7 +12,7 @@ $query = mysqli_query($conn, "SELECT * FROM user WHERE id = '$_SESSION[id]'");
 $row = mysqli_fetch_array($query);
 
 // Pagination variables
-$limit = 6; // Number of products per page
+$limit = 8; // Number of products per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
@@ -42,12 +42,26 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="index.css">
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-  <header class="bg-gray-800 fixed w-full z-10">
-    <div class="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-      <a class="block text-teal-600" href="#">
+  <!-- navbar -->
+  <header class="bg-gray-800   w-full z-10">
+    <div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
+      <button id="menu-toggle"
+        class="block rounded hover:bg-gray-700 p-2.5 text-gray-300 transition hover:text-white md:hidden">
+        <span class="sr-only">Toggle menu</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <a class="block text-teal-600 mx-auto md:mx-0" href="#">
         <span class="sr-only">Home</span>
         <svg class="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -55,71 +69,99 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
             fill="currentColor" />
         </svg>
       </a>
-      <div class="flex flex-1 items-center justify-end md:justify-between">
-        <nav aria-label="Global" class="hidden md:block">
-          <ul class="flex items-center gap-6 text-sm">
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="index.php"> Home </a>
-            </li>
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="about.php"> About </a>
-            </li>
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="category.php"> Product </a>
-            </li>
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="profiluser.php"> Profil </a>
-            </li>
-          </ul>
-        </nav>
+      <div class="hidden md:flex flex flex-1 items-center justify-end md:justify-between">
+        <ul class="hidden md:flex items-center  flex flex-row gap-2 text-sm">
+          <li>
+            <a class="text-gray-500 transition hover:text-gray-500/75 bg-gray-900 px-4 py-2 rounded-lg " id="active" href="admin.php"> Dashboard </a>
+          </li>
+          <li>
+            <a class="text-gray-500 transition hover:text-gray-500/75" href="profiluser.php"> Profil </a>
+          </li>
+          <!-- <li>
+            <a class="text-gray-500 transition hover:text-gray-500/75" href="category.php"> Category </a>
+          </li>
+          <li>
+            <a class="text-gray-500 transition hover:text-gray-500/75" href="profiluser.php"> Product </a>
+          </li> -->
+        </ul>
+      </div>
 
-        <div class="flex items-center gap-4">
-          <div >
-            <form method="GET" class="flex justify-center gap-2">
-              <input type="text" name="search" placeholder="Cari Produk"
-                class="bg-gray-700 text-white px-4 py-3 h-8 rounded-md text-xs focus:shadow-outline">
-              <button class="bg-blue-600 h1 px-2 hover:text-white hover:bg-blue-700 rounded-md">
-                <i class="fa-solid fa-magnifying-glass text-white"></i>
-              </button>
-            </form>
-          </div>
-          <div class="sm:flex sm:gap-4">
-            <a class="block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
-              href="logikalogout.php">
-              Logout
-            </a>
-            <!-- <a class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-blue-600 transition hover:text-blue-600/75 sm:block" href="registar.php">
+      <div class=" flex items-center gap-4">
+        <div class="hidden md:flex justify-center gap-2">
+          <form method="GET" class="flex w-full items-center gap-2 my-4">
+            <input type="text" name="search" placeholder="Cari Produk"
+              class="bg-gray-700 text-white px-4 py-3 h-8 rounded-md text-xs focus:shadow-outline">
+            <button class="bg-blue-600 px-2 py-1 h-8  hover:text-white hover:bg-blue-700 rounded-md">
+              <i class="fa-solid fa-magnifying-glass text-white"></i>
+            </button>
+          </form>
+        </div>
+        <div class="sm:flex sm:gap-4">
+          <a class="block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+            href="logikalogout.php">
+            Logout
+          </a>
+          <!-- <a class=" rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-blue-600 transition hover:text-blue-600/75 sm:block" href="registar.php">
             Register
           </a> -->
-          </div>
-
-          <button class="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden">
-            <span class="sr-only">Toggle menu</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
+    <div id="mobile-menu" class="md:hidden hidden">
+      <nav aria-label="Mobile" class="px-4 py-2">
+        <ul class="flex flex-col gap-2 text-sm">
+          <li>
+            <a class="text-gray-500 transition hover:text-gray-500/75" href="admin.php"> Dashboard </a>
+          </li>
+          <li>
+            <a class="text-gray-500 transition hover:text-gray-500/75" href="profiluser.php"> Profil </a>
+          </li>
+          <!-- <li class="border-b border-gray-100 w-full pb-2">
+            <a class="text-white transition hover:text-gray-500/75" href="data_produk.php"> Data Produk </a>
+          </li>
+          <li class="border-b border-gray-100 w-full pb-2">
+            <a class="text-white transition hover:text-gray-500/75" href="profil.php"> Profil </a>
+          </li> -->
+          <li>
+            <form method="GET" class="flex w-full items-center gap-2 my-4 ">
+              <input type="text" name="search" placeholder="Cari Produk"
+                class="bg-gray-700 w-full text-white px-4 py-2 rounded-md text-sm focus:shadow-outline">
+              <button class="bg-blue-600 px-3 py-2 rounded-md hover:bg-blue-700">
+                <i class="fa-solid fa-magnifying-glass text-white"></i>
+              </button>
+            </form>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <nav aria-label="Global" class="hidden md:block">
+      <ul class="hidden md flex items-center gap-6 text-sm">
+        <li>
+          <a class="text-gray-500 transition hover:text-gray-500/75" id="active"  href="admin.php"> Dashboard </a>
+        </li>
+        <li>
+          <a class="text-gray-500 transition hover:text-gray-500/75" href="profiluser.php"> Profil </a>
+        </li>
+        <!-- <li>
+          <a class="text-gray-500 transition hover:text-gray-500/75" href="data_produk.php"> Data Produk </a>
+        </li>
+        <li>
+          <a class="text-gray-500 transition hover:text-gray-500/75" href="profil.php"> Profil </a>
+        </li> -->
+        <li class="hidden md:flex items-center">
+          <form method="GET" class="flex items-center gap-2">
+            <input type="text" name="search" placeholder="Cari Produk"
+              class="bg-gray-700 text-white px-4 py-2 rounded-md text-sm focus:shadow-outline">
+            <button class="bg-blue-600 px-2 py-2 rounded-md hover:bg-blue-700">
+              <i class="fa-solid fa-magnifying-glass text-white"></i>
+            </button>
+          </form>
+        </li>
+      </ul>
+    </nav>
   </header>
 
-  <!-- <nav class="w-full h-16 bg-gray-800 px-6 flex justify-between items-center text-white fixed z-10">
-    <div>
-      <a class="text-3xl font-bold" href="index.php">Toko BukaWaroeng</a>
-    </div>
-    <div>
-      <ul class="flex gap-4">
-        <li><a class="hover:text-gray-500" href="admin.php">Home</a></li>
-        <li><a class="hover:text-gray-500" href="about.php">About</a></li>
-        <li><a class="hover:text-gray-500" href="produk.php">Product</a></li>
-        <li><a class="hover:text-gray-500" href="profiluser.php">Profil</a></li>
-        <li><a href="logikalogout.php" class="btn px-4 py-2 hover:text-white rounded-lg">Logout</a></li>
-      </ul>
-    </div>
-  </nav> -->
-
+  <!-- Buat Kan Saya Banner -->
   <div class="w-full h-screen flex justify-center items-center px-[10%] bg-gray-100">
     <div
       class="w-full h-[55%] flex justify-center items-center flex-col bg-white rounded-lg p-[10%] text-center border border-gray-500">
@@ -131,28 +173,22 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
     </div>
   </div>
 
-  <!-- <div class="w-full h-[13vh] flex justify-center border-b border-gray-300 py-4 gap-2 mt-6">
-    <form method="GET" class="w-full flex justify-center items-center gap-2">
-      <input type="text" name="search" placeholder="Cari Produk" class="w-[50%] border border-gray-500 p-2 rounded-lg">
-      <button type="submit" class="btn px-4 py-1 hover:text-white hover:bg-gray-500 rounded-lg">Search</button>
-    </form>
-  </div> -->
-
-
   <!-- buat kan saya kategory -->
-  <div class="w-full h-16 px-10 flex justify-between items-center">
-    <h1 class="text-xl font-bold">Kategori</h1>
-    <ul class="flex gap-4 items-center">
+  <div
+    class="w-full h-auto px-4 sm:px-10 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center border border-gray-300">
+    <h1 class="text-lg sm:text-xl font-bold mb-2 sm:mb-0">Kategori</h1>
+    <ul class="flex gap-2 sm:gap-4 items-center">
       <li><a class="hover:text-gray-500" href="index.php">All</a></li>
       <li><a class="hover:text-gray-500" href="index.php">Makanan</a></li>
       <li><a class="hover:text-gray-500" href="index.php">Minuman</a></li>
       <li class="relative group">
-        <div class="relative inline-block w-[150px]">
+        <div class="relative inline-block w-[100px] sm:w-[150px]">
           <button id="dropdownButton"
-            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            class="w-full px-2 sm:px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-sm">
             Pilih Kategori
           </button>
-          <div id="dropdownMenu" class="hidden absolute mt-1 w-full bg-white shadow-lg rounded-md z-10">
+          <div id="dropdownMenu"
+            class="hidden absolute mt-1 w-full bg-white shadow-lg rounded-md z-10 group-hover:block">
             <ul class="py-1 text-gray-700">
               <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Sepatu</a></li>
               <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Tas</a></li>
@@ -166,35 +202,37 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
 
   <div class="w-full flex flex-wrap justify-center items-center gap-4 mt-4">
     <?php
-        if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
-            while ($rowproduk = mysqli_fetch_assoc($queryproduk)) {
-                ?>
-    <div class="bg-white rounded-lg shadow-lg w-[30%] h-[70vh] p-4 flex justify-center items-center flex-col">
-      <div class="w-full flex justify-center h-[70%]">
+    if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
+        while ($rowproduk = mysqli_fetch_assoc($queryproduk)) {
+            ?>
+    <div
+      class="bg-white rounded-lg shadow-lg w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-auto border border-gray-300 p-4 flex flex-col justify-between items-center">
+      <div class="w-full flex justify-center mb-4">
         <a
           href="detailproduk.php?id=<?= $rowproduk['id']; ?>">
           <img
             src="produk/<?= $rowproduk['produk_image']; ?>"
             alt="<?= $rowproduk['produk_nama']; ?>"
-            width="250px">
+            class="object-cover h-48 w-full sm:h-60 md:h-64 lg:h-72" />
         </a>
       </div>
-      <div class="w-full h-[30%]">
-        <p class="text-2xl font-bold tracking-[0.1em] uppercase">
+      <div class="w-full text-center">
+        <p class="text-lg font-bold tracking-wide uppercase mb-2">
           <?= $rowproduk['produk_nama']; ?>
         </p>
-        <p class="text-xl text-right text-red-500">Rp.
+        <p class="text-lg text-red-500">Rp.
           <?= number_format($rowproduk['produk_harga'], 0, ',', '.'); ?>
         </p>
       </div>
     </div>
     <?php
-            }
-        } else {
-            echo "<p>Tidak ada produk yang ditemukan.</p>";
         }
+    } else {
+        echo "<p class='text-center w-full'>Tidak ada produk yang ditemukan.</p>";
+    }
 ?>
   </div>
+
 
   <div class="flex justify-center my-6">
     <?php if ($page > 1): ?>
@@ -214,38 +252,43 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
   </div>
 
   <!-- Buat Kan Saya Footer -->
-  <footer class="w-full h-64 bg-gray-800">
-    <div class="w-full h-full px-10 flex justify-between items-center text-white">
-      <div class="w-[40%]">
-        <a href="#" class="text-3xl font-bold">Toko BukaWaroeng</a>
-        <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla itaque unde enim iste pariatur
-          earum aut natus, tempore at adipisci.</p>
-      </div>
-      <div>
-        <ul class="flex gap-10">
-          <li class="">
-            <a class="hover:text-gray-500" href="index.php">Home</a>
-          </li>
-          <li class="">
-            <a class="hover:text-gray-500" href="about.php">About</a>
-          </li>
-          <li class="">
-            <a class="hover:text-gray-500" href="contact.php">Category</a>
-          </li>
-          <li class="">
-            <a class="hover:text-gray-500" href="contact.php">Produk</a>
-          </li>
-        </ul>
-        <p class="mt-6 text-right">
-          Copyright &copy; 2022. All rights reserved.
-        </p>
+  <footer class="w-full bg-gray-800">
+    <div class="container mx-auto px-6 py-8">
+      <div class="flex flex-col lg:flex-row justify-between items-center text-white">
+        <div class="mb-6 lg:mb-0 lg:w-1/3">
+          <a href="#" class="text-xl lg:text-3xl font-bold">Toko BukaWaroeng</a>
+          <p class="mt-4 text-gray-300 text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla itaque
+            unde enim iste pariatur.</p>
+        </div>
+        <div class="flex flex-col lg:flex-col items-center lg:items-start">
+          <ul class="flex text-[14px]  lg:flex-row gap-2 lg:gap-10 mb-4 lg:mb-0">
+            <li>
+              <a class="text-gray-500 transition hover:text-gray-500/75" href="admin.php"> Dashboard </a>
+            </li>
+            <li>
+              <a class="text-gray-500 transition hover:text-gray-500/75" href="profiluser.php"> Profil </a>
+            <!-- </li>
+            <li>
+              <a class="text-gray-500 transition hover:text-gray-500/75" href="category.php"> Category </a>
+            </li>
+            <li>
+              <a class="text-gray-500 transition hover:text-gray-500/75" href="product.php"> Product </a>
+            </li> -->
+          </ul>
+          <p class="text-gray-400">&copy; 2022. All rights reserved.</p>
+        </div>
       </div>
     </div>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-  </script>
   <script src="js/script.js"></script>
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
 </body>
 
 </html>

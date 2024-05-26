@@ -53,8 +53,7 @@ $data = mysqli_fetch_assoc($query);
           <div class="mb-4">
           <img src="produk/<?= $data['produk_image'] ?>" width="100px">
           <input type="hidden" name="foto" value="<?= $data['produk_image']?>">
-            <input type="file" name="gambar" 
-              required>
+            <input type="file" name="gambar" >
           </div>
           <div class="mb-4">
             <textarea class="input-control w-full h-40 px-3 py-2 border border-gray-300 rounded" name="deskripsi"

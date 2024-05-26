@@ -3,6 +3,7 @@ session_start();
 $conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
 
 $id = $_GET['id'];
+
 $name = $_POST['nama'];
 $harga = $_POST['harga'];
 $decs = $_POST['deskripsi'];

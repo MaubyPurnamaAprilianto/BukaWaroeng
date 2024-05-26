@@ -1,6 +1,6 @@
 <?php
 // session_start();
-// $conn = mysqli_connect("localhost","root","","db_katalog_produk");
+$conn = mysqli_connect("localhost","root","","db_katalog_produk");
 // if($_SESSION['login'] != true){
 // 	echo '<script>window.location="login.php"</script>';
 // }
@@ -39,6 +39,17 @@
       <h3 class="text-2xl font-semibold mb-4">Tambah Data Produk</h3>
       <div class="">
         <form action="logikatambahproduk.php" method="POST" enctype="multipart/form-data">
+          <div class="mb-4">
+            <select class=" w-full px-3 py-2 border border-gray-300 rounded" name="kategori" required>
+              <option value="">--Pilih--</option>
+              <?php
+              $kategori = mysqli_query($conn, "SELECT * FROM kategori ORDER BY id DESC");
+              while ($data = mysqli_fetch_array($kategori)) {
+              ?>
+              <option value="<?= $data['id'] ?>"><?= $data['kategori_name'] ?></option>
+              <?php } ?>
+            </select>
+          </div>
           <div class="mb-4">
             <input type="text" name="nama" class="text-[14px] border border-gray-300 px-3 py-2 w-full  rounded px-4 mb-4"
               placeholder="Nama Produk" required>
