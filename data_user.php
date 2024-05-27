@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="index.css">
   <style>
-    .hidden {
-      display: none;
-    }
-  </style>
+        .hidden { display: none; }
+    </style>
 </head>
-
 <body>
 <header class="bg-gray-800 w-full z-10">
       <div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
@@ -112,50 +111,49 @@
       </nav>
   </header>
 
-  <!-- buat kan saya table produk dengan column no nama produk , harga,deksripsi,image -->
-  <div class="w-full min-h-screen flex flex-col  p-10">
+  <!-- buat kan saya tabel data untuk user yang sudah daftar -->
+  <div class="w-full min-h-screen flex flex-col p-10">
     <h1 class="text-3xl font-bold mb-6">Data User</h1>
-    <div class="mb-4">
-      <a href="tambah-data-kategori.php" class="bg-blue-500 px-4 py-2 text-white  hover:bg-blue-600 rounded-lg">Tambah</a>
-    </div>
     <div class="overflow-x-auto w-full">
-      <table class="table-auto w-full mt-6 border border-gray-300" cellspacing="0" cellpadding="10">
-        <thead>
-          <tr>
-            <th class="border border-gray-300 px-4 py-2 w-[100px]">No</th>
-            <th class="border border-gray-300 px-4 py-2 w-[500px]">Kategori</th>
-            <th class="border border-gray-300 px-4 py-2 w-[100px]">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-        $no = 1;
-          $conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
-          $kategori = mysqli_query($conn, "SELECT * FROM kategori ORDER BY id DESC");
-          while ($data = mysqli_fetch_array($kategori)) {
-              ?>
-          <tr>
-            <td class="border border-gray-300 px-4 py-2"><?= $no++ ?>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <?= $data['kategori_name'] ?>
-            </td>
-            <td class="border border-gray-300 px-4 py-2 flex justify-center">
-              <a href="edit-kategory.php?id=<?= $data['id'] ?>"
-                class="bg-green-500 px-4 py-2 text-white hover:bg-green-600 rounded-lg mr-2">Edit</a>
-              <a href="deletekategori.php?id=<?= $data['id'] ?> "
-                onclick="return confirm('Yakin ingin hapus ?')"
-                class="bg-red-500 px-4 py-2 text-white hover:bg-red-700 rounded-lg">Delete</a>
-            </td>
-          </tr>
-          <?php } ?>
-        </tbody>
-      </table>
+        <table class="table-auto w-full mt-6 border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2">Nama</th>
+                    <th class="border border-gray-300 px-4 py-2">Email</th>
+                    <th class="border border-gray-300 px-4 py-2">Username</th>
+                    <th class="border border-gray-300 px-4 py-2">Nomer Hp</th>
+                    <th class="border border-gray-300 px-4 py-2">Alamat</th>
+                    <th class="border border-gray-300 px-4 py-2">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
+                $query = "SELECT * FROM user WHERE level = 2";
+                $result = mysqli_query($conn, $query);
+                while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2"><?php echo $row['name']; ?></td>
+                    <td class="border border-gray-300 px-4 py-2"><?php echo $row['email']; ?></td>
+                    <td class="border border-gray-300 px-4 py-2"><?php echo $row['username']; ?></td>
+                    <td class="border border-gray-300 px-4 py-2"><?php echo $row['nomer_hp']; ?></td>
+                    <td class="border border-gray-300 px-4 py-2"><?php echo $row['alamat']; ?></td>
+                    <td class="border border-gray-300 px-4 py-2 flex justify-center items-center">
+                        <a href="delete_user.php?id=<?php echo $row['id']; ?>" class="bg-red-500 px-4 py-2 text-white hover:bg-red-600 rounded-lg mr-2">Delete</a>
+                    </td>
+                </tr>
+                <?php
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
-  </div>
+</div>
 
-  <!-- footer -->
-  <footer class="w-full bg-gray-800">
+
+    <!-- Footer -->
+    <footer class="w-full bg-gray-800">
     <div class="container mx-auto px-6 py-8">
       <div class="flex flex-col lg:flex-row justify-between items-center text-white">
         <div class="mb-6 lg:mb-0 lg:w-1/3">
@@ -188,14 +186,13 @@
   </footer>
 
 
-  <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
+<script>
+const menuToggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
 
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-  </script>
+menuToggle.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+});
+</script>
 </body>
-
 </html>

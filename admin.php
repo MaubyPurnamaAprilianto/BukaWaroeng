@@ -12,7 +12,7 @@ $query = mysqli_query($conn, "SELECT * FROM user WHERE id = '$_SESSION[id]'");
 $row = mysqli_fetch_array($query);
 
 // Pagination variables
-$limit = 8; // Number of products per page
+$limit = 6; // Number of products per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
@@ -200,13 +200,13 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
     </ul>
   </div>
 
-  <div class="w-full flex flex-wrap justify-center items-center gap-4 mt-4">
+  <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-4 px-10">
     <?php
     if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
         while ($rowproduk = mysqli_fetch_assoc($queryproduk)) {
             ?>
     <div
-      class="bg-white rounded-lg shadow-lg w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-auto border border-gray-300 p-4 flex flex-col justify-between items-center">
+      class="bg-white rounded-lg shadow-lg border border-gray-300 p-4 flex flex-col justify-between items-center"> <!-- Removed w-full and other width classes -->
       <div class="w-full flex justify-center mb-4">
         <a
           href="detailproduk.php?id=<?= $rowproduk['id']; ?>">
@@ -216,7 +216,7 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
             class="object-cover h-48 w-full sm:h-60 md:h-64 lg:h-72" />
         </a>
       </div>
-      <div class="w-full text-center">
+      <div class="w-full">
         <p class="text-lg font-bold tracking-wide uppercase mb-2">
           <?= $rowproduk['produk_nama']; ?>
         </p>
@@ -231,7 +231,9 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
         echo "<p class='text-center w-full'>Tidak ada produk yang ditemukan.</p>";
     }
 ?>
-  </div>
+</div>
+
+
 
 
   <div class="flex justify-center my-6">

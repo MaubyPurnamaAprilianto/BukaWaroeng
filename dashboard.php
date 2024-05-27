@@ -54,6 +54,9 @@ $row = mysqli_fetch_assoc($result);
                       <a class="text-gray-500 transition hover:text-gray-500/75" href="data_produk.php"> Data Produk </a>
                   </li>
                   <li>
+                    <a class="text-gray-500 transition hover:text-gray-500/75" href="data_user.php"> Data User </a>
+                  </li>
+                  <li>
                       <a class="text-gray-500 transition hover:text-gray-500/75" href="profil.php"> Profil </a>
                   </li>
             </ul>
@@ -77,6 +80,9 @@ $row = mysqli_fetch_assoc($result);
                       <a class="text-gray-500 transition hover:text-gray-500/75" href="data_produk.php"> Data Produk </a>
                   </li>
                   <li>
+                    <a class="text-gray-500 transition hover:text-gray-500/75" href="data_user.php"> Data User </a>
+                  </li>
+                  <li>
                       <a class="text-gray-500 transition hover:text-gray-500/75" href="profil.php"> Profil </a>
                   </li>
                   <!-- <li>
@@ -90,7 +96,7 @@ $row = mysqli_fetch_assoc($result);
               </ul>
           </nav>
       </div>
-      <nav aria-label="Global" class="hidden md:block">
+      <nav aria-label="Global" class="hidden md:block"> 
           <ul class="hidden md flex items-center gap-6 text-sm">
               <li>
                   <a class="text-gray-500 transition hover:text-gray-500/75" href="dashboard.php"> Dashboard </a>
@@ -100,6 +106,9 @@ $row = mysqli_fetch_assoc($result);
               </li>
               <li>
                   <a class="text-gray-500 transition hover:text-gray-500/75" href="data_produk.php"> Data Produk </a>
+              </li>
+              <li>
+                <a class="text-gray-500 transition hover:text-gray-500/75" href="data_user.php"> Data User </a>
               </li>
               <li>
                   <a class="text-gray-500 transition hover:text-gray-500/75" href="profil.php"> Profil </a>
