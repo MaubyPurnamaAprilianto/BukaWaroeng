@@ -1,9 +1,11 @@
 <?php
-// session_start();
-$conn = mysqli_connect("localhost","root","","db_katalog_produk");
-// if($_SESSION['login'] != true){
-// 	echo '<script>window.location="login.php"</script>';
-// }
+session_start();
+$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
+
+if ($_SESSION["login"] !== true) {
+    echo "<script>window.location='login.php'</script>";
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,21 +19,6 @@ $conn = mysqli_connect("localhost","root","","db_katalog_produk");
 </head>
 
 <body class="bg-gray-100">
-
-  <nav class="w-full h-16 bg-gray-800 flex justify-between items-center text-white px-6 ">
-    <div>
-      <a href="dashboard.php" class="text-3xl font-bold">Toko BukaWaroeng</a>
-    </div>
-    <div>
-      <ul class="flex gap-6">
-        <li><a href="dashboard.php" class="hover:text-gray-500">Dashboard</a></li>
-        <li><a href="profil.php" class="hover:text-gray-500">Profil</a></li>
-        <li><a href="data_kategori.php" class="hover:text-gray-500">Data kategori</a></li>
-        <li><a href="data_produk.php" class="hover:text-gray-500">Data Produk</a></li>
-        <li><a href="logikalogout.php" class="btn px-4 py-2 hover:text-white rounded-lg">Logout</a></li>
-      </ul>
-    </div>
-  </nav>
 
   <!-- content -->
   <div class="flex justify-center items-center my-8">
