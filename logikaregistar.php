@@ -1,7 +1,6 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
-
+include 'koneksi.php';
 $name = $_POST['name'];
 $username = $_POST['username'];
 $email = $_POST['email'];

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
+include 'koneksi.php';
 
 if ($_SESSION["login"] !== true) {
     echo "<script>window.location='login.php'</script>";

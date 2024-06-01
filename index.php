@@ -1,7 +1,6 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
 session_start();
-
+include 'koneksi.php';
 
 // Pagination variables
 $limit = 6; // Number of products per page

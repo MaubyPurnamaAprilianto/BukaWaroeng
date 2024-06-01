@@ -1,7 +1,6 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
-
+include 'koneksi.php';
 $id = $_GET['id'];
 
 // Periksa apakah id ada dalam URL

@@ -2,7 +2,7 @@
 
 session_start();
 
-$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
+include 'koneksi.php';
 
 $username = $_POST['username'];
 $password = md5($_POST['password']);

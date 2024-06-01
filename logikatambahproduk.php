@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
+include 'koneksi.php';
 
 $kategori = $_POST['kategori'];
 $name = $_POST['nama'];

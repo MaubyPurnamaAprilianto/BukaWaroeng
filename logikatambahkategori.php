@@ -1,6 +1,6 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "db_katalog_produk");
+include 'koneksi.php';
 // tambah kategori
 
 $kategori = $_POST['kategori'];
