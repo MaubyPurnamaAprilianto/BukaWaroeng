@@ -9,15 +9,25 @@ $offset = ($page - 1) * $limit;
 
 // Search functionality
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
+$category_id = isset($_GET['category_id']) ? mysqli_real_escape_string($conn, $_GET['category_id']) : '';
 
-// Fetch total number of products with search filter
+
+// Fetch total number of products with search and category filter
 $total_query = "SELECT COUNT(*) AS total FROM produk WHERE produk_nama LIKE '%$search%'";
+if ($category_id) {
+    $total_query .= " AND kategori_id = '$category_id'";
+}
 $total_result = mysqli_query($conn, $total_query);
 $total_rows = mysqli_fetch_assoc($total_result)['total'];
 $total_pages = ceil($total_rows / $limit);
 
 // Fetch products for the current page with search filter
-$queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE '%$search%' LIMIT $limit OFFSET $offset");
+$queryproduk = "SELECT * FROM produk WHERE produk_nama LIKE '%$search%'";
+if ($category_id) {
+    $queryproduk .= " AND kategori_id = '$category_id'";
+}
+$queryproduk .= " LIMIT $limit OFFSET $offset";
+$queryproduk = mysqli_query($conn, $queryproduk);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,15 +41,44 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="index.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
     .hidden {
       display: none;
     }
+    #loading-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 1);
+    z-index: 1000;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  .loader {
+    border: 16px solid #f3f3f3;
+    border-top: 20px solid #0077b6;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
   </style>
 </head>
 
 <body>
-  <header class="bg-gray-800 fixed  w-full z-10">
+  <div id="loading-screen" class="fixed inset-0 flex items-center justify-center bg-white z-[1000]">
+    <div class="loader border-t-4 border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
+  </div>
+  
+  <header class="bg-gray-800 fixed w-full z-[999]">
     <div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
       <button id="menu-toggle"
         class="block rounded hover:bg-gray-700 p-2.5 text-gray-300 transition hover:text-white md:hidden">
@@ -72,11 +111,13 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
 
       <div class=" flex items-center gap-4">
         <div class="hidden md:flex justify-center gap-2">
-          <input type="text" name="search" placeholder="Cari Produk"
-            class="bg-gray-700 text-white px-4 py-3 h-8 rounded-md text-xs focus:shadow-outline">
-          <button class="bg-blue-600 h1 px-2 hover:text-white hover:bg-blue-700 rounded-md">
-            <i class="fa-solid fa-magnifying-glass text-white"></i>
-          </button>
+          <form method="GET" class="flex w-full items-center gap-2 my-4">
+            <input type="text" name="search" placeholder="Cari Produk"
+              class="bg-gray-700 text-white px-4 py-3 h-8 rounded-md text-xs focus:shadow-outline">
+            <button class="bg-blue-600 px-2 py-1 h-8  hover:text-white hover:bg-blue-700 rounded-md">
+              <i class="fa-solid fa-magnifying-glass text-white"></i>
+            </button>
+          </form>
         </div>
         <div class="sm:flex sm:gap-4">
           <a class="block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
@@ -106,10 +147,10 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
             <a class="text-white transition hover:text-gray-500/75" href="profil.php"> Profil </a>
           </li> -->
           <li>
-            <form method="GET" class="flex w-full items-center gap-2 my-4 ">
+            <form method="GET" class="flex w-full items-center gap-2 my-4">
               <input type="text" name="search" placeholder="Cari Produk"
-                class="bg-gray-700 w-full text-white px-4 py-2 rounded-md text-sm focus:shadow-outline">
-              <button class="bg-blue-600 px-3 py-2 rounded-md hover:bg-blue-700">
+                class="bg-gray-700 text-white px-4 py-3 h-8 rounded-md text-xs focus:shadow-outline">
+              <button class="bg-blue-600 px-2 py-1 h-8  hover:text-white hover:bg-blue-700 rounded-md">
                 <i class="fa-solid fa-magnifying-glass text-white"></i>
               </button>
             </form>
@@ -123,7 +164,8 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
   <!-- banner -->
   <section class="bg-gray-50">
     <div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
-      <div class="mx-auto max-w-xl text-center">
+      <div class="mx-auto max-w-xl text-center" data-aos="fade-zoom-in" data-aos-easing="ease-in-back"
+        data-aos-delay="200" data-aos-offset="0">
         <h1
           class="text-xl font-extrabold sm:text-3xl flex flex-col text-left  sm:text-center  justify-center sm:flex-row">
           Hello ! Welcome to
@@ -161,19 +203,19 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
         <div class="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:order-last lg:h-full">
           <img alt="A scenic view"
             src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-            class="absolute inset-0 h-full w-full object-cover" />
+            class="absolute inset-0 h-full w-full object-cover" data-aos="fade-up" />
         </div>
 
         <div class="lg:py-24">
-          <h2 class="text-3xl font-bold sm:text-4xl">Tentang Kami </h2>
+          <h2 class="text-3xl font-bold sm:text-4xl" data-aos="fade-up">Tentang Kami </h2>
 
-          <p class="mt-4 text-gray-600">
+          <p class="mt-4 text-gray-600" data-aos="fade-up">
             Kami adalah platform terdepan yang menyediakan berbagai produk berkualitas tinggi dari berbagai kategori.
             Dari smartphone terbaru hingga gadget inovatif, kami memiliki semua yang Anda butuhkan untuk memenuhi gaya
             hidup modern Anda.
           </p>
 
-          <a href="#products"
+          <a href="#products" data-aos="fade-up"
             class="mt-8 inline-block rounded bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400">
             Lihat Produk
           </a>
@@ -185,11 +227,12 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
 
 
   <!-- buat kan saya kategory -->
+  <!-- buat kan saya kategory -->
   <div
     class="w-full h-auto px-4 sm:px-10 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center border border-gray-300">
     <h1 class="text-lg sm:text-xl font-bold mb-2 sm:mb-0">Kategori</h1>
     <ul class="flex gap-2 sm:gap-4 items-center">
-      <li><a class="hover:text-gray-500 cursor-pointer" onclick="filterProducts('all')">All</a></li>
+      <li><a href="index.php" class="hover:text-gray-500 cursor-pointer">All</a></li>
       <li class="relative group">
         <div class="relative inline-block w-[100px] sm:w-[150px]">
           <button id="dropdownButton"
@@ -200,7 +243,7 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
             class="hidden absolute mt-1 w-full bg-white shadow-lg rounded-md z-10 group-hover:block">
             <ul class="py-1 text-gray-700">
               <?php
-    $query = mysqli_query($conn, "SELECT * FROM kategori");
+                    $query = mysqli_query($conn, "SELECT * FROM kategori");
 while ($row = mysqli_fetch_assoc($query)) {
     ?>
               <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -214,10 +257,10 @@ while ($row = mysqli_fetch_assoc($query)) {
         </div>
       </li>
     </ul>
+
   </div>
 
-  <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-4 px-10"
-    id="products">
+  <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-4 px-10">
     <?php
 if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
     while ($rowproduk = mysqli_fetch_assoc($queryproduk)) {
@@ -252,19 +295,21 @@ if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
   </div>
 
 
+
+
   <div class="flex justify-center my-6">
     <?php if ($page > 1): ?>
-    <a href="?page=<?= $page - 1 ?>"
+    <a href="?page=<?= $page - 1 ?>&search=<?= $search ?>&category_id=<?= $category_id ?>"
       class="mx-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
     <?php endif; ?>
 
     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-    <a href="?page=<?= $i ?>"
+    <a href="?page=<?= $i ?>&search=<?= $search ?>&category_id=<?= $category_id ?>"
       class="mx-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 <?= ($i == $page) ? 'bg-gray-400' : '' ?>"><?= $i ?></a>
     <?php endfor; ?>
 
     <?php if ($page < $total_pages): ?>
-    <a href="?page=<?= $page + 1 ?>"
+    <a href="?page=<?= $page + 1 ?>&search=<?= $search ?>&category_id=<?= $category_id ?>"
       class="mx-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Next</a>
     <?php endif; ?>
   </div>
@@ -300,20 +345,16 @@ if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
       </div>
     </div>
   </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
   </script>
   <script src="js/script.js"></script>
   <script>
     function filterProducts(categoryId) {
-      const products = document.querySelectorAll('[data-category]');
-      products.forEach(product => {
-        if (categoryId === 'all' || product.getAttribute('data-category') === categoryId) {
-          product.style.display = 'block';
-        } else {
-          product.style.display = 'none';
-        }
-      });
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set('category_id', categoryId);
+      window.location.search = searchParams.toString();
     }
   </script>
   <script>
@@ -324,6 +365,23 @@ if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
       mobileMenu.classList.toggle('hidden');
     });
   </script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('load', function() {
+      // Simulate a delay of 2 seconds
+      setTimeout(function() {
+        document.getElementById('loading-screen').style.display = 'none';
+      }, 1000); // 2000 milliseconds = 2 seconds
+    });
+  });
+</script>
+
+
+
 </body>
 
 </html>

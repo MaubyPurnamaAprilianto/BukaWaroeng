@@ -18,15 +18,25 @@ $offset = ($page - 1) * $limit;
 
 // Search functionality
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
+$category_id = isset($_GET['category_id']) ? mysqli_real_escape_string($conn, $_GET['category_id']) : '';
 
-// Fetch total number of products with search filter
+
+// Fetch total number of products with search and category filter
 $total_query = "SELECT COUNT(*) AS total FROM produk WHERE produk_nama LIKE '%$search%'";
+if ($category_id) {
+    $total_query .= " AND kategori_id = '$category_id'";
+}
 $total_result = mysqli_query($conn, $total_query);
 $total_rows = mysqli_fetch_assoc($total_result)['total'];
 $total_pages = ceil($total_rows / $limit);
 
 // Fetch products for the current page with search filter
-$queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE '%$search%' LIMIT $limit OFFSET $offset");
+$queryproduk = "SELECT * FROM produk WHERE produk_nama LIKE '%$search%'";
+if ($category_id) {
+    $queryproduk .= " AND kategori_id = '$category_id'";
+}
+$queryproduk .= " LIMIT $limit OFFSET $offset";
+$queryproduk = mysqli_query($conn, $queryproduk);
 ?>
 
 
@@ -50,8 +60,9 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
 </head>
 
 <body>
+
   <!-- navbar -->
-  <header class="bg-gray-800 fixed  w-full z-10">
+  <header class="bg-gray-800 fixed  w-full z-[999]">
     <div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
       <button id="menu-toggle"
         class="block rounded hover:bg-gray-700 p-2.5 text-gray-300 transition hover:text-white md:hidden">
@@ -176,31 +187,32 @@ $queryproduk = mysqli_query($conn, "SELECT * FROM produk WHERE produk_nama LIKE 
     class="w-full h-auto px-4 sm:px-10 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center border border-gray-300">
     <h1 class="text-lg sm:text-xl font-bold mb-2 sm:mb-0">Kategori</h1>
     <ul class="flex gap-2 sm:gap-4 items-center">
-      <li><a class="hover:text-gray-500 cursor-pointer" onclick="filterProducts('all')">All</a></li>
-      <li class="relative group">
+    <li><a href="admin.php" class="hover:text-gray-500 cursor-pointer" >All</a></li>
+    <li class="relative group">
         <div class="relative inline-block w-[100px] sm:w-[150px]">
-          <button id="dropdownButton"
-            class="w-full px-2 sm:px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-sm">
-            Pilih Kategori
-          </button>
-          <div id="dropdownMenu"
-            class="hidden absolute mt-1 w-full bg-white shadow-lg rounded-md z-10 group-hover:block">
-            <ul class="py-1 text-gray-700">
-              <?php
-    $query = mysqli_query($conn, "SELECT * FROM kategori");
-while ($row = mysqli_fetch_assoc($query)) {
-    ?>
-              <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onclick="filterProducts('<?= $row['id']; ?>')"><?= $row['kategori_name']; ?></a>
-              </li>
-              <?php
-}
-?>
-            </ul>
-          </div>
+            <button id="dropdownButton"
+                class="w-full px-2 sm:px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-sm">
+                Pilih Kategori
+            </button>
+            <div id="dropdownMenu"
+                class="hidden absolute mt-1 w-full bg-white shadow-lg rounded-md z-10 group-hover:block">
+                <ul class="py-1 text-gray-700">
+                    <?php
+                    $query = mysqli_query($conn, "SELECT * FROM kategori");
+                    while ($row = mysqli_fetch_assoc($query)) {
+                    ?>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onclick="filterProducts('<?= $row['id']; ?>')"><?= $row['kategori_name']; ?></a>
+                    </li>
+                    <?php
+                    }
+                    ?>
+                </ul>
+            </div>
         </div>
-      </li>
-    </ul>
+    </li>
+</ul>
+
   </div>
 
   <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-4 px-10">
@@ -217,7 +229,7 @@ if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
           <img
             src="produk/<?= $rowproduk['produk_image']; ?>"
             alt="<?= $rowproduk['produk_nama']; ?>"
-            class="object-cover h-48 w-full sm:h-60 md:h-64 lg:h-72" />
+            class="object-cover h-48 w-full sm:h-60 md:h-64 lg:h-72"/>
         </a>
       </div>
       <div class="w-full">
@@ -242,20 +254,21 @@ if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
 
   <div class="flex justify-center my-6">
     <?php if ($page > 1): ?>
-    <a href="?page=<?= $page - 1 ?>"
+    <a href="?page=<?= $page - 1 ?>&search=<?= $search ?>&category_id=<?= $category_id ?>"
       class="mx-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
     <?php endif; ?>
 
     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-    <a href="?page=<?= $i ?>"
+    <a href="?page=<?= $i ?>&search=<?= $search ?>&category_id=<?= $category_id ?>"
       class="mx-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 <?= ($i == $page) ? 'bg-gray-400' : '' ?>"><?= $i ?></a>
     <?php endfor; ?>
 
     <?php if ($page < $total_pages): ?>
-    <a href="?page=<?= $page + 1 ?>"
+    <a href="?page=<?= $page + 1 ?>&search=<?= $search ?>&category_id=<?= $category_id ?>"
       class="mx-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Next</a>
     <?php endif; ?>
-  </div>
+</div>
+
 
   <!-- Buat Kan Saya Footer -->
   <footer class="w-full bg-gray-800">
@@ -292,16 +305,12 @@ if ($queryproduk && mysqli_num_rows($queryproduk) > 0) {
   <script src="js/script.js"></script>
   <script>
     function filterProducts(categoryId) {
-      const products = document.querySelectorAll('[data-category]');
-      products.forEach(product => {
-        if (categoryId === 'all' || product.getAttribute('data-category') === categoryId) {
-          product.style.display = 'block';
-        } else {
-          product.style.display = 'none';
-        }
-      });
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set('category_id', categoryId);
+        window.location.search = searchParams.toString();
     }
   </script>
+
   <script>
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
